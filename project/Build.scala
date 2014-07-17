@@ -2,6 +2,7 @@ import sbt._
 import Keys._
 import sbt.{Build => SbtBuild}
 import org.sbtidea.SbtIdeaPlugin._
+import com.typesafe.sbt.SbtStartScript
 
 object Build extends SbtBuild {
   val commonSettings = Seq(
@@ -26,7 +27,7 @@ object Build extends SbtBuild {
       "com.typesafe.play" %% "play-json" % "2.3.1" % "compile",
       "com.typesafe.akka" %% "akka-actor" % "2.3.2" % "compile"
     )
-  )
+  ) ++ SbtStartScript.startScriptForClassesSettings
 
   lazy val root = Project(
     id = "twm-keep-alive",
