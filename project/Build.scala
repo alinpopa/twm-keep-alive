@@ -25,7 +25,8 @@ object Build extends SbtBuild {
       "org.scalamock" %% "scalamock-scalatest-support" % "3.1.1" % "test",
       "io.spray" %% "spray-client" % "1.3.1" % "compile",
       "com.typesafe.play" %% "play-json" % "2.3.1" % "compile",
-      "com.typesafe.akka" %% "akka-actor" % "2.3.2" % "compile"
+      "com.typesafe.akka" %% "akka-actor" % "2.3.2" % "compile",
+      "com.typesafe.akka" %% "akka-kernel" % "2.3.2" % "compile"
     )
   ) ++ SbtStartScript.startScriptForClassesSettings
 

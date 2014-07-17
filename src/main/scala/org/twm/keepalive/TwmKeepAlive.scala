@@ -1,24 +1,21 @@
 package org.twm.keepalive
 
-import akka.actor.ActorSystem
+import akka.actor.Actor
 import spray.client.pipelining._
 import scala.concurrent.duration._
-import scala.concurrent.Future
-import scala.util.{Failure, Success}
+import scala.concurrent.ExecutionContext.Implicits.global
 
-object TwmKeepAlive {
-  def main(args: Array[String]): Unit = {
-    implicit val system = ActorSystem()
-    import system.dispatcher
+class TwmKeepAlive extends Actor {
+  private val pipeline = sendReceive
 
-    val pipeline = sendReceive
+  context.system.scheduler.schedule(initialDelay = 0.milliseconds, interval = 5.minutes, self, "tick")
 
-    system.scheduler.schedule(initialDelay = 0.seconds, interval = 5.minutes, new Runnable {
-      override def run(): Unit = {
-        pipeline(Get("http://twm.herokuapp.com/keep-alive")).onComplete{
-          case completed => println(s"Completed: $completed")
-        }
+  override def receive = {
+    case "tick" =>
+      pipeline(Get("http://twm.herokuapp.com/keep-alive")).onComplete{
+        case completed => println(s"Completed: $completed")
       }
-    })
+    case msg =>
+      println(s"Got wrong message: $msg")
   }
 }
